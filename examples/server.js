@@ -1,6 +1,8 @@
+const path = require('path');
 const express = require('express')
 const bodyParser = require('body-parser')
 const cookieParse = require('cookie-parser');
+const multipart = require('connect-multiparty');
 const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
@@ -30,6 +32,9 @@ app.use(express.static(__dirname, {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParse());
+app.use(multipart({
+  uploadDir: path.resolve(__dirname + '/upload/upload-file'), // 设置上传目录
+}));
 
 const router = express.Router()
 
@@ -41,6 +46,7 @@ registerInterceptorRouter();
 registerConfigRouter();
 registerCancelRouter();
 registerMoreRouter();
+registerUploadRouter();
 
 app.use(router)
 
@@ -165,3 +171,12 @@ function registerMoreRouter() {
     res.json(req.cookies);
   });
 }
+
+function registerUploadRouter() {
+  router.post('/upload/upload', function (req, res) {
+    console.log(req.body, req.files);
+    res.end('upload success!');
+  });
+}
+
+
