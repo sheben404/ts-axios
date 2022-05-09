@@ -172,6 +172,12 @@ function registerMoreRouter() {
   router.get('/more/get', function (req, res) {
     res.json(req.cookies);
   });
+
+
+  router.get('/more/304', function (req, res) {
+    res.status(304)
+    res.end()
+  })
 }
 
 function registerUploadRouter() {
