@@ -30,16 +30,14 @@ export function parseHeaders(headers: string): any {
   if (!headers) {
     return parsed
   }
-  
+
   headers.split('\r\n').forEach(line => {
-    let [key, val] = line.split(':')
+    let [key, ...vals] = line.split(':')
     key = key.trim().toLowerCase()
     if (!key) {
       return
     }
-    if (val) {
-      val = val.trim()
-    }
+    let val = vals.join(':').trim()
     parsed[key] = val
   })
 
@@ -47,7 +45,7 @@ export function parseHeaders(headers: string): any {
 }
 
 export function flattenHeaders(headers: any, method: Method): any {
-  if(!headers) {
+  if (!headers) {
     return headers
   }
 

@@ -64,7 +64,7 @@ export function buildURL(url: string, params?: any, paramsSerializer?: (params: 
   let serializedParams
 
   if (paramsSerializer) {
-    serializedParams = paramsSerializer(paramsSerializer)
+    serializedParams = paramsSerializer(params)
   } else if (isURLSearchParams(params)) {
     serializedParams = params.toString()
   } else {
