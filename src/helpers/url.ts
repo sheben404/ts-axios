@@ -35,6 +35,16 @@ export function isURLSameOrigin(requestURL: string): boolean {
   )
 }
 
+export function isAbsoluteURL(url: string): boolean {
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url)
+}
+
+export function combineURL(baseURL: string, relativeURL: string): string {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL
+}
+
 function encode(val: string): string {
   return encodeURIComponent(val)
     .replace(/%40/g, '@')
@@ -57,13 +67,13 @@ export function buildURL(url: string, params?: any, paramsSerializer?: (params: 
     serializedParams = paramsSerializer(paramsSerializer)
   } else if (isURLSearchParams(params)) {
     serializedParams = params.toString()
-}else {
+  } else {
     const parts: string[] = []
 
     Object.keys(params).forEach(key => {
       const val = params[key]
       if (val == null) return
-  
+
       let values: string[]
       if (Array.isArray(val)) {
         values = val
@@ -71,7 +81,7 @@ export function buildURL(url: string, params?: any, paramsSerializer?: (params: 
       } else {
         values = [val]
       }
-  
+
       values.forEach(val => {
         if (isDate(val)) {
           val = val.toISOString()
